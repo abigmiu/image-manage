@@ -6,10 +6,13 @@ export class ImageEntity {
     @PrimaryGeneratedColumn()
         id: number;
 
-    @Column({ name: 'file_path', comment: '文件路径'  })
+    @Column({ name: 'file_path', comment: '文件路径' })
         filePath: string;
 
-    @Column({ type: 'text', comment: '备注'})
+    @Column({ name: 'file_id', comment:'文件 Id' })
+        fileId: number;
+
+    @Column({ type: 'text', comment: '备注' })
         remark: string;
 
     @Column({ comment: '文件标题' })
@@ -22,13 +25,16 @@ export class ImageEntity {
         coverFilePath: string;
 
     @Column({ name: 'is_delete' })
-        idDelete: boolean;
+        isDelete: boolean;
 
     @CreateDateColumn({ name: 'create_ta' })
         createAt: Date;
 
     @UpdateDateColumn({ name: 'update_at' })
         updateAt: Date;
+
+    @Column({ name: 'cloud_value', type: 'json', comment: '其他第三方服务' })
+        cloudValue: string;
 
 
 

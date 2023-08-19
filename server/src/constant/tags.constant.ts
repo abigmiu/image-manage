@@ -7,4 +7,4 @@ export const TAGS_COLOR = {
     GREEN: 5,
     PURPLE: 6,
     ORANGE: 7,
-}
+};

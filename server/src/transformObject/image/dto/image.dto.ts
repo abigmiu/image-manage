@@ -12,5 +12,12 @@ export class CreateImageDto {
     /** 标签id*/
     tagIds: number[];
     /** 缩略图路径 */
-    coverFilePath: string;
+    coverFilePath?: string;
+    /** 第三方云服务 */
+    cloudValue?: string;
+}
+
+export class ImageQueryDto {
+    page?: number;
+    size?: number;
 }
