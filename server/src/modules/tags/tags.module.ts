@@ -4,7 +4,7 @@ import { TagsService } from "./tag.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { TagsEntity } from "src/entities/tags/tags.entity";
 
-/* 标签 module */
+/** 标签 module */
 @Module({
     imports: [
         TypeOrmModule.forFeature([TagsEntity])

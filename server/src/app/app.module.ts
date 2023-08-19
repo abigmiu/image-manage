@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from 'src/interceptors/transfrom.interceptor';
 import { appModules } from 'src/modules';
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import {  join } from 'path';
+import { HttpExceptionFilter } from 'src/filters/httpException.filter';
+import { GlobalExceptionFilter } from 'src/filters/globalException.filter';
 
 @Module({
     imports: [
@@ -29,7 +31,15 @@ import {  join } from 'path';
         {
             provide: APP_INTERCEPTOR,
             useClass: TransformInterceptor
-        }
+        },
+        {
+            provide: APP_FILTER,
+            useClass: GlobalExceptionFilter,
+        },
+        {
+            provide: APP_FILTER,
+            useClass: HttpExceptionFilter,
+        },
     ],
 })
 export class AppModule {}
