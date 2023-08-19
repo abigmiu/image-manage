@@ -8,4 +8,7 @@ export class FileEntity {
 
     @Column({ name: 'file_name' })
         fileName: string;
+
+    @Column({ name: 'origin_name' })
+        originName: string;
 }

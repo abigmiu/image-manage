@@ -10,9 +10,10 @@ export class UploadService {
         private readonly fileRepository: Repository<FileEntity>
     ){}
 
-    async addFile(fileName: string) {
+    async addFile(fileName: string, originName: string) {
         const file = new FileEntity();
-        file.fileName = fileName
-        await this.fileRepository.save(file)
+        file.fileName = fileName;
+        file.originName = originName;
+        await this.fileRepository.save(file);
     }
 }
