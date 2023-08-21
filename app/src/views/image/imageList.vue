@@ -1,0 +1,40 @@
+<template>
+    <NCard>
+        <BasicTable :columns="columns" :data="listData"></BasicTable>
+    </NCard>
+</template>
+<script setup lang="ts">
+import { BasicTable } from '@/components/table'
+import { NCard, NImage } from 'naive-ui'
+import { h } from 'vue';
+
+const columns = [
+    {
+        title: 'id',
+        key: 'id',
+    },
+    {
+        title: '图片',
+        key: 'coverFilePath',
+        render(row: any) {
+            return h(NImage, {
+                src: row.coverFilePath
+            })
+        }
+    },
+    {
+        title: '名称',
+        key: 'name',
+    }, 
+    {
+        title: '备注',
+        key: 'remark',
+    }
+]
+
+const listData = [
+    {
+        id: 1
+    }
+]
+</script>
