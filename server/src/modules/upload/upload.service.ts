@@ -10,10 +10,17 @@ export class UploadService {
         private readonly fileRepository: Repository<FileEntity>
     ){}
 
-    async addFile(fileName: string, originName: string) {
+    /**
+     *
+     * @param filePath 文件路径
+     * @param originName 原文件名
+     * @returns
+     */
+    async addFile(filePath: string, originName: string) {
         const file = new FileEntity();
-        file.fileName = fileName;
+        file.filePath = filePath;
         file.originName = originName;
-        await this.fileRepository.save(file);
+        const res = await this.fileRepository.save(file);
+        return res;
     }
 }

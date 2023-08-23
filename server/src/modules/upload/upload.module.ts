@@ -30,18 +30,18 @@ function checkDirAndCreate(filepath: string) {
                 destination(req, file, callback) {
                     const { dir } = req.query;
 
-                    let filePath = v4();
+                    let filePath = '';
                     if (typeof dir === 'string') {
-                        filePath = `${dir}/${filePath}/test`;
+                        filePath = `${dir}/${filePath}`;
                     }
 
-                    filePath = join(__dirname, '/upload', filePath);
+                    filePath = join('./upload', filePath);
                     console.log(filePath);
                     checkDirAndCreate(filePath);
                     callback(null, filePath);
                 },
                 filename(req, file, callback) {
-                    return callback(null, file.originalname);
+                    return callback(null, `${v4()}&${file.originalname}`);
                 }
             })
         })

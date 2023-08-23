@@ -6,8 +6,8 @@ export class FileEntity {
     @PrimaryGeneratedColumn()
         id: number;
 
-    @Column({ name: 'file_name' })
-        fileName: string;
+    @Column({ name: 'file_path' })
+        filePath: string;
 
     @Column({ name: 'origin_name' })
         originName: string;
