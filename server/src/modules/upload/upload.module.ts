@@ -33,11 +33,15 @@ function checkDirAndCreate(filepath: string) {
                     let filePath = '';
                     if (typeof dir === 'string') {
                         filePath = `${dir}/${filePath}`;
+                        filePath = join('./upload', filePath);
+                        checkDirAndCreate(filePath);
+                    } else {
+                        filePath = join('./upload', filePath);
                     }
 
-                    filePath = join('./upload', filePath);
-                    console.log(filePath);
-                    checkDirAndCreate(filePath);
+
+                    console.log('filePath', filePath);
+
                     callback(null, filePath);
                 },
                 filename(req, file, callback) {
