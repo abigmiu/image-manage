@@ -13,6 +13,6 @@ export class UploadController {
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
         console.log('file', file);
         const res = await this.uploadService.addFile(file.path, file.originalname);
-        console.log(res);
+        return res;
     }
 }

@@ -16,10 +16,11 @@ export class TransformInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest<Request>();
         const response = context.switchToHttp().getResponse<Response>();
+
         if (request.method.toUpperCase() === 'POST' && response.statusCode === HttpStatus.CREATED) {
             response.status(HttpStatus.OK);
         }
-        if (request.method.toUpperCase() === 'GET' && response.statusCode == HttpStatus.NOT_MODIFIED) {
+        if (request.method.toUpperCase() === 'GET' && response.statusCode === HttpStatus.NOT_MODIFIED) {
             response.status(HttpStatus.OK);
         }
 

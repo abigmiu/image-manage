@@ -10,7 +10,7 @@ class UploadService {
      * @param config 文件配置
      * @returns 
      */
-    uploadSingleFile(file: File, config?: ISingFileUploadRequest) {
+    uploadSingleFile(file: File | Blob, config?: ISingFileUploadRequest) {
         const formData = new FormData;
         formData.append('file', file);
         return http.request<string>({
