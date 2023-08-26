@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Query } from "@nestjs/commo
 import { ImageService } from "./image.service";
 import { CreateImageDto, ImageQueryDto } from "src/transformObject/image/dto/image.dto";
 
-@Controller()
+@Controller('image')
 export class ImageController {
     constructor(
         private readonly imageService: ImageService

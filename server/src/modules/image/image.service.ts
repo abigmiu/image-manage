@@ -11,28 +11,27 @@ export class ImageService {
     constructor(
         @InjectRepository(ImageEntity)
         private readonly imageRepo: Repository<ImageEntity>
-    ) {}
+    ) { }
 
     /** 创建图片 */
     async createImage(data: CreateImageDto) {
         const image = new ImageEntity();
         image.filePath = data.filePath;
-        image.fileId = data.fileId;
         if (data.name) {
             image.name = data.name;
         }
         if (data.link) {
             image.link = data.link;
         }
-        if (data.remark) {
-            image.remark = data.remark;
-        }
+
+        image.remark = data.remark || '';
+
         if (data.coverFilePath) {
             image.coverFilePath = data.coverFilePath;
         }
-        if (data.cloudValue) {
-            image.cloudValue = data.cloudValue;
-        }
+
+        image.cloudValue = data.cloudValue || [];
+
 
         image.tags = data.tagIds.map((tagId) => {
             const tag = new TagsEntity();
@@ -54,7 +53,7 @@ export class ImageService {
 
     /** 获取分页数据 */
     async getPageData(query: ImageQueryDto) {
-        const { page= 1, size= 10 } = query;
+        const { page = 1, size = 10 } = query;
         const res = await this.imageRepo.findAndCount({
             where: {
                 isDelete: false,

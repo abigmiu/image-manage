@@ -1,4 +1,5 @@
 import { ISingFileUploadRequest } from "@/types/apis/request/upload/upload";
+import { IUploadResponse } from "@/types/apis/response/upload/upload";
 import http from '@/utils/axios';
 
 class UploadService {
@@ -13,7 +14,7 @@ class UploadService {
     uploadSingleFile(file: File | Blob, config?: ISingFileUploadRequest) {
         const formData = new FormData;
         formData.append('file', file);
-        return http.request<string>({
+        return http.request<IUploadResponse>({
             url: this.prefix,
             method: 'post',
             params: config,
