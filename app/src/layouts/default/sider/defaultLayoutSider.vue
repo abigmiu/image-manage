@@ -1,14 +1,10 @@
 <template>
-    <NMenu
-        :options="menuOptions"
-        class="default-layout--sider"
-        inverted    
-    >
+    <NMenu :options="menuOptions" class="default-layout--sider" inverted>
 
     </NMenu>
 </template>
 <script setup lang="ts">
-import type {  MenuOption } from 'naive-ui'
+import type { MenuOption } from 'naive-ui'
 import { NMenu } from 'naive-ui'
 
 const menuOptions: MenuOption[] = [
@@ -23,6 +19,16 @@ const menuOptions: MenuOption[] = [
             {
                 label: '图片列表',
                 key: 'image-manage--list'
+            }
+        ]
+    },
+    {
+        label: '标签管理',
+        key: 'tags-manage',
+        children: [
+            {
+                label: '标签列表',
+                key: 'tags-manage-list'
             }
         ]
     }

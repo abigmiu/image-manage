@@ -12,6 +12,10 @@ export const route: RouteRecordRaw[] = [
             {
                 path: 'image-create',
                 component: () => import('@/views/image/imageUpload.vue')
+            },
+            {
+                path: 'tags-list',
+                component: () => import('@/views/tags/tagsList.vue')
             }
         ]
     }
