@@ -18,7 +18,7 @@ export class TagsService {
             where: {
                 isDelete: false,
             }
-        })
+        });
         return res;
     }
 
@@ -33,10 +33,10 @@ export class TagsService {
                 id: tagId,
                 isDelete: false
             }
-        })
+        });
         console.log("🚀 ~ TagsService ~ isTagIsExit ~ res:", res);
 
-        return Boolean(res)
+        return Boolean(res);
     }
 
     /** 是否已经有当前标签名
@@ -49,14 +49,14 @@ export class TagsService {
                 name: tagName,
                 isDelete: false,
             }
-        })
+        });
 
         return Boolean(res);
     }
 
     /* 创建标签 */
     async createTag(data: CreateTagsDto) {
-        const tag = new TagsEntity()
+        const tag = new TagsEntity();
         tag.colorType = data.colorType;
         tag.name = data.name;
         const tagDetail = await this.tagsRepository.save(tag);

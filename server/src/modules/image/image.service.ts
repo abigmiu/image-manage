@@ -66,6 +66,7 @@ export class ImageService {
             take: size,
             skip: (page - 1) * size
         });
+        console.log(res[0]);
 
         const staticAssetsPath = this.configService.get<string>('staticAssetsPath');
         res[0].forEach((item) => {

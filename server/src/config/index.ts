@@ -1,5 +1,3 @@
-import { resolve } from "path";
-
 const loadConfig = async () => {
     const env = process.env.NODE_ENV;
     console.log(env);

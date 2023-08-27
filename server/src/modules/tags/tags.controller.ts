@@ -20,7 +20,7 @@ export class TagsController {
     async updateTag(@Param('id') id: string, @Body() body: UpdateTagsDto) {
         const isExit = await this.tagsService.isTagIsExit(Number(id));
         if (!isExit) {
-            throw  new BadRequestException('标签不存在')
+            throw  new BadRequestException('标签不存在');
         }
         return this.tagsService.updateTag(Number(id), body);
     }
@@ -29,7 +29,7 @@ export class TagsController {
     async deleteTag(@Param('id') id: string) {
         const isExit = await this.tagsService.isTagIsExit(Number(id));
         if (!isExit) {
-            throw  new BadRequestException('标签不存在')
+            throw  new BadRequestException('标签不存在');
         }
         return this.tagsService.deleteTag(Number(id));
     }
@@ -40,8 +40,8 @@ export class TagsController {
 
         const hasTagName = await this.tagsService.hasTagName(body.name);
         if (hasTagName) {
-            throw  new BadRequestException('已有相同的标签名')
+            throw  new BadRequestException('已有相同的标签名');
         }
-        return this.tagsService.createTag(body)
+        return this.tagsService.createTag(body);
     }
 }

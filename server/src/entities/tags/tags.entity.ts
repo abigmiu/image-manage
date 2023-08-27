@@ -9,8 +9,8 @@ export class TagsEntity {
         name: string;
 
     @Column({ name: 'color_type', default: 0 })
-        colorType: number
+        colorType: number;
 
     @Column({ name: 'is_delete', default: false, })
-        isDelete: boolean
+        isDelete: boolean;
 }

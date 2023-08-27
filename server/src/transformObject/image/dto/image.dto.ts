@@ -1,3 +1,6 @@
+import { Type } from "class-transformer";
+import { IsInt, IsOptional } from "class-validator";
+
 export class CreateImageDto {
     /** 名称 */
     name?: string;
@@ -16,6 +19,17 @@ export class CreateImageDto {
 }
 
 export class ImageQueryDto {
-    page?: number;
-    size?: number;
+    @IsOptional()
+    @Type(() => Number)
+    @IsInt({
+        message: '$property 不合法，需要为整数'
+    })
+        page?: number;
+
+    @IsOptional()
+    @Type(() => Number)
+    @IsInt({
+        message: '$property 不合法，需要为整数'
+    })
+        size?: number;
 }
