@@ -6,8 +6,8 @@ import { UploadController } from "./upload.controller";
 import { UploadService } from "./upload.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { FileEntity } from "src/entities/file/file.entity";
-import { existsSync, mkdirSync } from 'fs';
-import { sep, join} from 'path';
+import { existsSync, mkdirSync,  } from 'fs';
+import { sep, join, extname } from 'path';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
 
@@ -16,7 +16,7 @@ function checkDirAndCreate(filepath: string) {
         .split(sep)
         .reduce((prevPath: string, folder) => {
             const currentPath = join(prevPath, folder, sep);
-            if (!existsSync(currentPath)){
+            if (!existsSync(currentPath)) {
                 mkdirSync(currentPath);
             }
             return currentPath;
@@ -24,7 +24,8 @@ function checkDirAndCreate(filepath: string) {
 }
 
 @Module({
-    imports:[
+    imports: [
+        ConfigModule.forRoot(),
         TypeOrmModule.forFeature([FileEntity]),
         MulterModule.registerAsync({
             imports: [ConfigModule],
@@ -37,22 +38,18 @@ function checkDirAndCreate(filepath: string) {
 
                             const configPath = configService.get<string>('uploadAbsolutePath');
 
-                            let filePath = '';
+                            let dirPath = configPath;
                             if (typeof dir === 'string') {
-                                filePath = `${dir}/${filePath}`;
-                                filePath = join(configPath, filePath);
-                                checkDirAndCreate(filePath);
-                            } else {
-                                filePath = join(configPath, filePath);
+                                dirPath = join(configPath, dir);
+                                checkDirAndCreate(dirPath);
                             }
 
 
-                            console.log('filePath', filePath);
-
-                            callback(null, filePath);
+                            callback(null, dirPath);
                         },
                         filename(req, file, callback) {
-                            return callback(null, `${v4()}&${decodeURI(file.originalname)}`);
+                            const filename = `${v4()}${extname(file.originalname)}`;
+                            return callback(null, filename);
                         }
                     })
                 };
@@ -63,4 +60,4 @@ function checkDirAndCreate(filepath: string) {
     controllers: [UploadController],
     providers: [UploadService]
 })
-export class UploadModule {}
+export class UploadModule { }

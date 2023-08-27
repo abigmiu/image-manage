@@ -13,8 +13,9 @@ async function bootstrap() {
     app.use(cookieParser());
 
     const uploadConfigPath = config.get<string>('uploadAbsolutePath');
+    const assetsPublicPath = config.get<string>('staticAssetsPath');
     app.useStaticAssets(uploadConfigPath, {
-        prefix: '/api/static/upload'
+        prefix: assetsPublicPath
     });
 
     const globalPrefix = config.get<string>('globalPrefix');

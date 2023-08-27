@@ -16,6 +16,13 @@ class ImageService {
             url: `${this.prefix}/page`,
         })
     }
+
+    deleteImage(imageId: number) {
+        return http.request({
+            url: `${this.prefix}/${imageId}`,
+            method: 'delete',
+        })
+    }
 }
 
 export const imageService = new ImageService()

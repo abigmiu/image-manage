@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ImageEntity } from "src/entities/image/image.entity";
 import { TagsEntity } from "src/entities/tags/tags.entity";
@@ -10,7 +11,8 @@ import { Repository } from "typeorm";
 export class ImageService {
     constructor(
         @InjectRepository(ImageEntity)
-        private readonly imageRepo: Repository<ImageEntity>
+        private readonly imageRepo: Repository<ImageEntity>,
+        private readonly configService: ConfigService,
     ) { }
 
     /** 创建图片 */
@@ -23,14 +25,17 @@ export class ImageService {
         if (data.link) {
             image.link = data.link;
         }
-
-        image.remark = data.remark || '';
+        if (data.remark) {
+            image.remark = data.remark;
+        }
+        if (data.cloudValue) {
+            image.cloudValue = data.cloudValue;
+        }
 
         if (data.coverFilePath) {
             image.coverFilePath = data.coverFilePath;
         }
 
-        image.cloudValue = data.cloudValue || [];
 
 
         image.tags = data.tagIds.map((tagId) => {
@@ -47,7 +52,7 @@ export class ImageService {
         const image = new ImageEntity();
         image.id = imageId;
         await this.imageRepo.update(image, {
-            isDelete: false,
+            isDelete: true,
         });
     }
 
@@ -60,6 +65,14 @@ export class ImageService {
             },
             take: size,
             skip: (page - 1) * size
+        });
+
+        const staticAssetsPath = this.configService.get<string>('staticAssetsPath');
+        res[0].forEach((item) => {
+            item.filePath = `${staticAssetsPath}${item.filePath}`;
+            if (item.coverFilePath) {
+                item.coverFilePath = `${staticAssetsPath}${item.coverFilePath}`;
+            }
         });
 
         return handlePageData(res, page, size);

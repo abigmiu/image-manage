@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { BasicTable } from '@/components/table'
 import { imageService } from '@/services/image';
-import { NCard, NImage } from 'naive-ui'
+import { NButton, NCard, NImage, useDialog } from 'naive-ui'
 import { h, onMounted, ref } from 'vue';
 
 const columns = [
@@ -30,6 +30,23 @@ const columns = [
     {
         title: '备注',
         key: 'remark',
+    },
+    {
+        title: '操作',
+        key: 'action',
+        render(row: any) {
+            return h(
+                NButton,
+                {
+                    quaternary: true,
+                    type: 'error',
+                    onClick: () => onDelete(row)
+                },
+                {
+                    default: () => '删除'
+                }
+            )
+        }
     }
 ]
 
@@ -41,4 +58,17 @@ async function fetchData() {
 
 onMounted(() => fetchData())
 
+const dialog = useDialog();
+async function onDelete(row: any) {
+    const dialogInstance = dialog.warning({
+        title: '删除',
+        content: `确定删除文件“${row.name}”？`,
+        positiveText: '删除',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+            dialogInstance.loading = true;
+            await imageService.deleteImage(row.id);
+        }
+    })
+}
 </script>
