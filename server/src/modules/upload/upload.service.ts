@@ -19,7 +19,7 @@ export class UploadService {
     async addFile(filePath: string, originName: string) {
         const file = new FileEntity();
         file.filePath = filePath;
-        file.originName = originName;
+        file.originName = decodeURI(originName);
         const res = await this.fileRepository.save(file);
         return res;
     }

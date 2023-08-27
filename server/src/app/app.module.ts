@@ -4,26 +4,28 @@ import { AppService } from './app.service';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from 'src/interceptors/transfrom.interceptor';
 import { appModules } from 'src/modules';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+
+import config from 'src/config';
 
 import {  join } from 'path';
 import { HttpExceptionFilter } from 'src/filters/httpException.filter';
 import { GlobalExceptionFilter } from 'src/filters/globalException.filter';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
     imports: [
         ...appModules,
-        TypeOrmModule.forRoot({
-            type: 'mysql',
-            host: '127.0.0.1',
-            port: 3306,
-            username: 'root',
-            // password: '123456',
-            charset: 'utf8mb4',
-            database: 'image_manage',
-            entities: [join(__dirname, '../entities/**/*.entity{.js,.ts}')],
-            synchronize: true,
-            logging: false,
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [config],
+        }),
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory(configService: ConfigService) {
+                return configService.get<TypeOrmModuleOptions>('db');
+            }
         })
     ],
     controllers: [AppController],

@@ -5,8 +5,9 @@
 </template>
 <script setup lang="ts">
 import { BasicTable } from '@/components/table'
+import { imageService } from '@/services/image';
 import { NCard, NImage } from 'naive-ui'
-import { h } from 'vue';
+import { h, onMounted, ref } from 'vue';
 
 const columns = [
     {
@@ -18,7 +19,7 @@ const columns = [
         key: 'coverFilePath',
         render(row: any) {
             return h(NImage, {
-                src: row.coverFilePath
+                src: row.coverFilePath || row.filePath
             })
         }
     },
@@ -32,9 +33,12 @@ const columns = [
     }
 ]
 
-const listData = [
-    {
-        id: 1
-    }
-]
+const listData = ref([])
+async function fetchData() {
+    const res: any = await imageService.getPageData();
+    listData.value = res.content;
+}
+
+onMounted(() => fetchData())
+
 </script>

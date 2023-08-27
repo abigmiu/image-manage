@@ -13,7 +13,7 @@ class UploadService {
      */
     uploadSingleFile(file: File | Blob, config?: ISingFileUploadRequest) {
         const formData = new FormData;
-        formData.append('file', file);
+        formData.append('file', file, encodeURI(file.name));
         return http.request<IUploadResponse>({
             url: this.prefix,
             method: 'post',

@@ -4,10 +4,16 @@ class ImageService {
     private readonly prefix = 'image'
 
     createImage(data: any) {
-        http.request({
+        return http.request({
             url: this.prefix,
             method: 'post',
             data,
+        })
+    }
+
+    getPageData() {
+        return http.request({
+            url: `${this.prefix}/page`,
         })
     }
 }
