@@ -30,6 +30,12 @@ export class ImageEntity {
     @Column({ comment: '缩略图路径', nullable: true })
         coverFilePath: string | null;
 
+    @Column({ comment: '图片宽度', default: 200 })
+        width: number;
+
+    @Column({ comment: '图片高度', default: 200 })
+        height: number;
+
 
     @Column({ name: 'cloud_value', type: 'json', comment: '其他第三方服务', nullable: true })
         cloudValue: Array<Record<string, any>>;

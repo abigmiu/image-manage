@@ -18,6 +18,6 @@ export async function cloudUpload(file: File, options?: AxiosRequestConfig) {
         headers: uploadParams.headers,
     })
 
-    return 
+    return uploadParams.accessUrl;
 
 }

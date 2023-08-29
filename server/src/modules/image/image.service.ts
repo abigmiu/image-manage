@@ -36,7 +36,8 @@ export class ImageService {
             image.coverFilePath = data.coverFilePath;
         }
 
-
+        image.width = data.width;
+        image.height = data.height;
 
         image.tags = data.tagIds.map((tagId) => {
             const tag = new TagsEntity();

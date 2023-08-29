@@ -16,6 +16,9 @@ export class CreateImageDto {
     coverFilePath?: string;
     /** 第三方云服务 */
     cloudValue?: Array<any>;
+
+    width: number;
+    height: number;
 }
 
 export class ImageQueryDto {

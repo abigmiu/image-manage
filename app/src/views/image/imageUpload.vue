@@ -18,22 +18,23 @@
                     </div>
                 </NFormItem>
                 <NFormItem label="第三方存储">
-                    <div>
+                    <div class="w-full">
                         <NCheckbox v-model:checked="useCloud">启用第三方存储</NCheckbox>
-                        <CloudUpload v-if="useCloud" :file="selectedFile"></CloudUpload>
+                        <CloudUpload v-if="useCloud" :file="selectedFile" :thumbnail-file="selectedThumbnailFile"
+                            ref="cloudUploadRef">
+                        </CloudUpload>
                     </div>
-
                 </NFormItem>
                 <NFormItem label="文件名称">
                     <NInput v-model:value="editData.name"></NInput>
                 </NFormItem>
                 <NFormItem label="文件备注">
-                    <NInput v-model:value="editData.remark"></NInput>
+                    <NInput type="textarea" v-model:value="editData.remark"></NInput>
                 </NFormItem>
                 <NFormItem label="文件原链接">
-                    <NInput type="textarea" v-model:value="editData.link"></NInput>
+                    <NInput v-model:value="editData.link"></NInput>
                 </NFormItem>
-                <NFormItem>
+                <NFormItem label="标签">
                     <TagSelect v-model="editData.tagIds"></TagSelect>
                 </NFormItem>
                 <NFormItem>
@@ -163,7 +164,7 @@ const editData = reactive({
     link: '',
     remark: '',
     coverFilePath: '',
-    cloudValue: [],
+    cloudValue: [] as any[],
 })
 
 
@@ -175,12 +176,20 @@ async function uploadAll() {
     }
 }
 
+const cloudUploadRef = ref<null | InstanceType<typeof CloudUpload>>(null)
+
+async function getCloudUploadValue() {
+    const res = await cloudUploadRef.value!.uploadAll();
+    editData.cloudValue = res;
+}
+
 const submitted = ref(false)
 async function onSubmit() {
     if (loading.submit) return;
     loading.submit = true;
     try {
         await uploadAll();
+        await getCloudUploadValue();
         await imageService.createImage({
             name: editData.name,
             tagIds: editData.tagIds,
