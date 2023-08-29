@@ -1,7 +1,7 @@
 <template>
     <NCard>
-        <div style="width: 500px" class="mx-auto">
-            <NForm>
+        <div style="width: 750px" class="mx-auto">
+            <NForm label-width="120px" label-placement="left" label-align="right">
                 <NFormItem label="上传文件">
                     <div v-show="showFileUpload">
                         <DragFile @change="onFileChange"></DragFile>
@@ -15,8 +15,14 @@
                             </NIcon>
                             <NImage width="300" :src="previewImageBlob!"></NImage>
                         </div>
-
                     </div>
+                </NFormItem>
+                <NFormItem label="第三方存储">
+                    <div>
+                        <NCheckbox v-model:checked="useCloud">启用第三方存储</NCheckbox>
+                        <CloudUpload v-if="useCloud" :file="selectedFile"></CloudUpload>
+                    </div>
+
                 </NFormItem>
                 <NFormItem label="文件名称">
                     <NInput v-model:value="editData.name"></NInput>
@@ -43,6 +49,7 @@ import { NCard, NForm, NInput, NFormItem, NButton, NCheckbox, NImage, NIcon, use
 import { CloseCircleFilled } from '@vicons/antd'
 import DragFile from './components/DragFile.vue';
 import TagSelect from './components/TagSelect.vue';
+import CloudUpload from './components/CloudUpload.vue';
 
 import { reactive, ref, onUnmounted } from 'vue';
 import { imageService } from '@/services/image';
@@ -84,6 +91,7 @@ function handleShowPreview(file: File) {
 
 // === 文件上传相关
 const useThumbnail = ref(true)
+const useCloud = ref(true)
 const selectedFile = ref<File | null>(null)
 const selectedThumbnailFile = ref<File | null>(null)
 
