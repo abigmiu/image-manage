@@ -1,6 +1,6 @@
 <template>
     <NCard>
-        <BasicTable :columns="columns" :data="listData"></BasicTable>
+        <BasicTable :columns="columns" :data="listData" :pagination="pagination"></BasicTable>
 
         <NDrawer v-model:show="detailVisible" :width="500">
             <NDrawerContent title="详情" >
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { BasicTable } from '@/components/table'
 import { imageService } from '@/services/image';
-import { NButton, NCard, NImage, useDialog, NDrawer, NDrawerContent } from 'naive-ui'
+import { NButton, NCard, NImage, useDialog, NDrawer, NDrawerContent, PaginationProps } from 'naive-ui'
 import { h, onMounted, reactive, ref } from 'vue';
 
 import ImageDetail from './components/ImageDetail.vue'
@@ -80,10 +80,24 @@ const columns = [
     }
 ]
 
+const pagination = reactive<PaginationProps>({
+    page: 1,
+    pageSize: 10,
+    itemCount: 0
+})
+
+const query = {
+    page: 1,
+    size: 10
+}
+
 const listData = ref([])
 async function fetchData() {
-    const res: any = await imageService.getPageData();
+    const res: any = await imageService.getPageData(query);
     listData.value = res.content;
+    pagination.itemCount = res.pagination.total;
+    pagination.page = res.pagination.page;
+    pagination.pageSize = res.pagination.pageSize;
 }
 
 onMounted(() => fetchData())

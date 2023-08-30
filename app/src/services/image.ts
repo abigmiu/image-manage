@@ -11,9 +11,10 @@ class ImageService {
         })
     }
 
-    getPageData() {
+    getPageData(query: Record<string, any>) {
         return http.request({
             url: `${this.prefix}/page`,
+            params: query,
         })
     }
 
