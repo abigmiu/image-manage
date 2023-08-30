@@ -1,51 +1,81 @@
 <template>
     <NCard>
         <BasicTable :columns="columns" :data="listData"></BasicTable>
+
+        <NDrawer v-model:show="detailVisible" :width="500">
+            <NDrawerContent title="详情" >
+                <ImageDetail :source="detailData"></ImageDetail>
+            </NDrawerContent>
+        </NDrawer>
     </NCard>
 </template>
 <script setup lang="ts">
 import { BasicTable } from '@/components/table'
 import { imageService } from '@/services/image';
-import { NButton, NCard, NImage, useDialog } from 'naive-ui'
-import { h, onMounted, ref } from 'vue';
+import { NButton, NCard, NImage, useDialog, NDrawer, NDrawerContent } from 'naive-ui'
+import { h, onMounted, reactive, ref } from 'vue';
+
+import ImageDetail from './components/ImageDetail.vue'
 
 const columns = [
     {
         title: 'id',
         key: 'id',
+        
     },
     {
         title: '图片',
         key: 'coverFilePath',
+        
         render(row: any) {
             return h(NImage, {
-                src: row.coverFilePath || row.filePath
+                src: row.coverFilePath || row.filePath,
+                previewSrc: row.filePath,
+                height: 100,
+                'object-fit': 'cover',
             })
         }
     },
     {
         title: '名称',
         key: 'name',
-    }, 
+        
+    },
     {
         title: '备注',
         key: 'remark',
+        
     },
     {
         title: '操作',
         key: 'action',
+        
         render(row: any) {
-            return h(
-                NButton,
-                {
-                    quaternary: true,
-                    type: 'error',
-                    onClick: () => onDelete(row)
-                },
-                {
-                    default: () => '删除'
-                }
-            )
+            return h('div', [
+                h(
+                    NButton,
+                    {
+                        quaternary: true,
+                        type: 'info',
+                        onClick: () => onDetailBtn(row),
+                    },
+                    {
+                        default: () => '详情',
+                    }
+                ),
+                h(
+                    NButton,
+                    {
+                        quaternary: true,
+                        type: 'error',
+                        onClick: () => onDelete(row)
+                    },
+                    {
+                        default: () => '删除'
+                    }
+                ),
+
+            ])
         }
     }
 ]
@@ -70,5 +100,14 @@ async function onDelete(row: any) {
             await imageService.deleteImage(row.id);
         }
     })
+}
+
+
+// 详情相关
+const detailData = reactive({})
+const detailVisible = ref(false)
+function onDetailBtn(row: Record<string, any>) {
+    Object.assign(detailData, row);
+    detailVisible.value = true;
 }
 </script>

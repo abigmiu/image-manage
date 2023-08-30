@@ -5,7 +5,6 @@
                 <NFormItem label="上传文件">
                     <div v-show="showFileUpload">
                         <DragFile @change="onFileChange"></DragFile>
-                        <NCheckbox v-model:checked="useThumbnail" class="mt-2">上传缩略图</NCheckbox>
                     </div>
                     <div v-show="!showFileUpload">
                         <div class="inline-block relative">
