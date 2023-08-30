@@ -23,7 +23,7 @@ class TagsService {
      * @returns 
      */
     createTag(data: ITagsCreateRequest) {
-        return http.request({
+        return http.request<ITagResponse>({
             url: this.prefix,
             method: 'post',
             data,

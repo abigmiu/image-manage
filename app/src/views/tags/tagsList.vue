@@ -1,16 +1,10 @@
 <template>
     <NCard>
         <NSpace>
-            <NTag
-             v-for="item in tagsData" 
-             :key="item.id"
-              :color="TAGS_COLOR_VALUE[item.colorType]" 
-              closable
-                @close="onHandleDelete(item)" 
-                :style="{
+            <NTag v-for="item in tagsData" :key="item.id" :color="TAGS_COLOR_VALUE[item.colorType]" closable
+                @close="onHandleDelete(item)" :style="{
                     '--n-close-icon-color': TAGS_COLOR_VALUE[item.colorType].textColor
-                }"
-            >
+                }">
                 {{ item.name }}
             </NTag>
 
@@ -61,15 +55,14 @@ const dialog = useDialog();
 const tagsData = reactive<ITags[]>([])
 async function fetchListData() {
     const res = await tagService.getList();
-    tagsData.length = 0;
-    tagsData.push(...res);
+    Object.assign(tagsData, res);
 }
 onMounted(() => {
     fetchListData();
 })
 
 
-const tagsColorOptions: SelectMixedOption[] =  [
+const tagsColorOptions: SelectMixedOption[] = [
     {
         label: TAGS_COLOR_NAME[TAGS_COLOR.NORMAL],
         value: TAGS_COLOR.NORMAL
@@ -138,8 +131,12 @@ async function onSubmitCreateTag() {
             name: createValue.name,
             colorType: createValue.colorType!,
         }
-        await tagService.createTag(submitData);
+        const res = await tagService.createTag(submitData);
+        tagsData.push(res);
         onToggleCreate();
+
+        createValue.name = '';
+        createValue.colorType = null;
     } finally {
         createLoading.value = false;
     }
