@@ -69,13 +69,13 @@ export class ImageService {
         });
         console.log(res[0]);
 
-        const staticAssetsPath = this.configService.get<string>('staticAssetsPath');
-        res[0].forEach((item) => {
-            item.filePath = `${staticAssetsPath}${item.filePath}`;
-            if (item.coverFilePath) {
-                item.coverFilePath = `${staticAssetsPath}${item.coverFilePath}`;
-            }
-        });
+        // const staticAssetsPath = this.configService.get<string>('staticAssetsPath');
+        // res[0].forEach((item) => {
+        //     item.filePath = `${staticAssetsPath}${item.filePath}`;
+        //     if (item.coverFilePath) {
+        //         item.coverFilePath = `${staticAssetsPath}${item.coverFilePath}`;
+        //     }
+        // });
 
         return handlePageData(res, page, size);
     }

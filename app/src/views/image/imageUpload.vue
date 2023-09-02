@@ -3,26 +3,10 @@
         <div style="width: 750px" class="mx-auto">
             <NForm label-width="120px" label-placement="left" label-align="right">
                 <NFormItem label="上传文件">
-                    <div v-show="showFileUpload">
-                        <DragFile @change="onFileChange"></DragFile>
-                    </div>
-                    <div v-show="!showFileUpload">
-                        <div class="inline-block relative">
-                            <NIcon class="absolute top-0 right-0 transform cursor-pointer" size="20"
-                                style="--un-translate-x: 50%;--un-translate-y: -50%;" @click="onClearFile">
-                                <CloseCircleFilled></CloseCircleFilled>
-                            </NIcon>
-                            <NImage width="300" :src="previewImageBlob!"></NImage>
-                        </div>
-                    </div>
-                </NFormItem>
-                <NFormItem label="第三方存储">
                     <div class="w-full">
-                        <NCheckbox v-model:checked="useCloud">启用第三方存储</NCheckbox>
-                        <CloudUpload v-if="useCloud" :file="selectedFile" :thumbnail-file="selectedThumbnailFile"
-                            ref="cloudUploadRef">
-                        </CloudUpload>
+                        <DragFile @uploaded="onFileUploaded" ref="dragFileRef" @change="onFileChange"></DragFile>
                     </div>
+                    
                 </NFormItem>
                 <NFormItem label="文件名称">
                     <NInput v-model:value="editData.name"></NInput>
@@ -45,17 +29,12 @@
     </NCard>
 </template>
 <script setup lang="ts">
-import { NCard, NForm, NInput, NFormItem, NButton, NCheckbox, NImage, NIcon, useMessage } from 'naive-ui'
-import { CloseCircleFilled } from '@vicons/antd'
+import { NCard, NForm, NInput, NFormItem, NButton, useMessage } from 'naive-ui'
 import DragFile from './components/DragFile.vue';
 import TagSelect from './components/TagSelect.vue';
-import CloudUpload from './components/CloudUpload.vue';
 
-import { reactive, ref, onUnmounted } from 'vue';
+import { reactive, ref } from 'vue';
 import { imageService } from '@/services/image';
-import { uploadService } from '@/services/upload';
-import { createImageThumbnail } from '@/utils/canvas';
-import { blobToFile } from '@/utils/file';
 
 // === 第三方组件
 const message = useMessage();
@@ -65,97 +44,12 @@ const loading = reactive({
     submit: false
 })
 
-// 预览图片相关
-const previewImageBlob = ref<string | null>(null)
-onUnmounted(() => {
-    clearPreviewData()
 
-})
-
-function clearPreviewData() {
-    if (previewImageBlob.value) {
-        window.URL.revokeObjectURL(previewImageBlob.value);
-        previewImageBlob.value = null
-    }
-}
-function handleShowPreview(file: File) {
-    const previewUrl = window.URL.createObjectURL(file)
-    const image = new Image();
-    image.onload = () => {
-        previewImageBlob.value = previewUrl;
-        showFileUpload.value = false;
-    }
-    image.src = previewUrl
-}
-
-
-// === 文件上传相关
-const useThumbnail = ref(true)
-const useCloud = ref(true)
-const selectedFile = ref<File | null>(null)
-const selectedThumbnailFile = ref<File | null>(null)
-
-const showFileUpload = ref(true)
-
-onUnmounted(() => {
-
-    selectedFile.value = null;
-
-
-    selectedThumbnailFile.value = null;
-
-})
-
-function onClearFile() {
-    editData.filePath = '';
-    editData.coverFilePath = '';
-    selectedFile.value = null;
-    selectedThumbnailFile.value = null;
-    clearPreviewData();
-    showFileUpload.value = true;
-}
-
-async function createThumbnailFile(file: File) {
-    const blob = window.URL.createObjectURL(file);
-    let thumbnailBlob: Blob | null = await createImageThumbnail(blob);
-    const thumbnailFile = blobToFile(thumbnailBlob, `thumbnail-${file.name}`);
-    window.URL.revokeObjectURL(blob);
-    thumbnailBlob = null;
-    return thumbnailFile;
-}
-
-async function uploadThumbnail() {
-    const thumbnailFile = selectedThumbnailFile.value!
-    try {
-        const res = await uploadService.uploadSingleFile(thumbnailFile, { dir: 'thumbnail' });
-        editData.coverFilePath = res.filePath
-        return res;
-    } finally {
-
-    }
-}
-async function uploadOrigin() {
-    const file = selectedFile.value!
-    try {
-        const res = await uploadService.uploadSingleFile(file);
-        editData.filePath = res.filePath;
-        return res;
-    } finally {
-
-    }
-}
-
-/** 文件选择改变 */
-async function onFileChange(file: File) {
-    editData.name = file.name.split('.').slice(0, -1).join('');
-    selectedFile.value = file;
-    selectedThumbnailFile.value = await createThumbnailFile(file);
-    handleShowPreview(file);
-}
+// 上传文件组件
+const dragFileRef = ref<null | InstanceType<typeof DragFile>>(null)
 
 
 // === 表单数据
-
 const editData = reactive({
     tagIds: [],
     name: '',
@@ -166,29 +60,24 @@ const editData = reactive({
     cloudValue: [] as any[],
 })
 
-
-
-async function uploadAll() {
-    await uploadOrigin();
-    if (useThumbnail) {
-        await uploadThumbnail();
+function onFileUploaded(url: string, type: 'origin' | 'thumbnail') {
+    if (type === 'thumbnail') {
+        editData.coverFilePath = url;
+    } else if (type === 'origin') {
+        editData.filePath = url;
     }
 }
 
-const cloudUploadRef = ref<null | InstanceType<typeof CloudUpload>>(null)
-
-async function getCloudUploadValue() {
-    const res = await cloudUploadRef.value!.uploadAll();
-    editData.cloudValue = res;
+function onFileChange(file: File) {
+    editData.name = file.name.split('.').slice(0, -1).join('')
 }
+
 
 const submitted = ref(false)
 async function onSubmit() {
     if (loading.submit) return;
     loading.submit = true;
     try {
-        await uploadAll();
-        await getCloudUploadValue();
         await imageService.createImage({
             name: editData.name,
             tagIds: editData.tagIds,
@@ -207,13 +96,13 @@ async function onSubmit() {
 
 /** 重置数据 */
 function onResetData() {
-    onClearFile();
     editData.name = '';
     editData.cloudValue = [];
     editData.link = '';
     editData.remark = '';
     editData.tagIds = [];
     submitted.value = false;
+    dragFileRef.value!.onClearFile();
 }
 </script>
 

@@ -1,5 +1,6 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
 import { CloudUploadService } from "./cloudUpload.service";
+import { ICloudUploadQuery } from "src/transformObject/cloudUpload/cloudUpload.dto";
 
 @Controller('cloud-upload')
 export class CloudUploadController {
@@ -8,7 +9,7 @@ export class CloudUploadController {
     ) { }
 
     @Get('qiniu')
-    getQiNiuUploadConfig() {
-        return this.cloudUploadService.getQiNiuUploadConfig();
+    getQiNiuUploadConfig(@Query() query: ICloudUploadQuery) {
+        return this.cloudUploadService.getQiNiuUploadConfig(query);
     }
 }
