@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext .ts,.vue"
   },
   "dependencies": {
     "@vicons/antd": "^0.12.0",
@@ -16,7 +17,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.5.1",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
     "@vitejs/plugin-vue": "^4.2.3",
+    "eslint": "^8.48.0",
+    "eslint-plugin-vue": "^9.17.0",
     "naive-ui": "^2.34.4",
     "sass": "^1.66.1",
     "typescript": "^5.0.2",

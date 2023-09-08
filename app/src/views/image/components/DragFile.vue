@@ -1,48 +1,81 @@
 <template>
-    <div v-if="showFileUpload" class="upload-wrapper flex flex-col items-center justify-center" @dragenter="onDragEnter"
-        @dragover.prevent @dragleave="onDragLeave" @drop="onFileDrop" @click="onFileClick">
+    <div
+        v-if="showFileUpload"
+        class="upload-wrapper flex flex-col items-center justify-center"
+        @dragenter="onDragEnter"
+        @dragover.prevent
+        @dragleave="onDragLeave"
+        @drop="onFileDrop"
+        @click="onFileClick"
+    >
         <NIcon size="24">
             <CloudUploadOutlined />
         </NIcon>
 
-        <p class="text-center mt-5">点击或者拖动文件到该区域来上传</p>
+        <p class="text-center mt-5">
+            点击或者拖动文件到该区域来上传
+        </p>
 
-        <input type="file" accept="image/*" class="file-input" @change="onFileChange" ref="fileRef" />
+        <input
+            ref="fileRef"
+            type="file"
+            accept="image/*"
+            class="file-input"
+            @change="onFileChange"
+        >
     </div>
     <div v-else>
         <div class="inline-block relative">
-            <NIcon class="absolute top-0 right-0 transform cursor-pointer" size="20"
-                style="--un-translate-x: 50%;--un-translate-y: -50%;" @click="onClearFile">
-                <CloseCircleFilled></CloseCircleFilled>
+            <NIcon
+                class="absolute top-0 right-0 transform cursor-pointer"
+                size="20"
+                style="--un-translate-x: 50%;--un-translate-y: -50%;"
+                @click="onClearFile"
+            >
+                <CloseCircleFilled />
             </NIcon>
-            <NImage width="300" :src="previewImageBlob!"></NImage>
+            <NImage width="300" :src="previewImageBlob!" />
         </div>
     </div>
     <div v-if="startUpload" class="mt-2 ml-10">
         <div class="flex items-center">
-            <div class="w-60px">缩略图</div>
-            <n-progress type="line" :percentage="uploadData.thumbnailProcess" class="flex-1"
-                :status="uploadData.thumbnailStatus" />
+            <div class="w-60px">
+                缩略图
+            </div>
+            <n-progress
+                type="line"
+                :percentage="uploadData.thumbnailProcess"
+                class="flex-1"
+                :status="uploadData.thumbnailStatus"
+            />
             <div class="w-90px ml-2">
-                <NButton quaternary v-if="uploadData.thumbnailStatus === 'error'" @click="uploadThumbnail">
-                    重新上传</NButton>
+                <NButton v-if="uploadData.thumbnailStatus === 'error'" quaternary @click="uploadThumbnail">
+                    重新上传
+                </NButton>
             </div>
         </div>
         <div class="flex items-center">
-            <div class="w-60px">原图</div>
-            <n-progress type="line" :percentage="uploadData.originProcess" class="flex-1"
-                :status="uploadData.originStatus" />
+            <div class="w-60px">
+                原图
+            </div>
+            <n-progress
+                type="line"
+                :percentage="uploadData.originProcess"
+                class="flex-1"
+                :status="uploadData.originStatus"
+            />
             <div class="w-90px ml-2">
-                <NButton quaternary v-if="uploadData.originStatus === 'error'" @click="uploadOrigin">
-                    重新上传</NButton>
+                <NButton v-if="uploadData.originStatus === 'error'" quaternary @click="uploadOrigin">
+                    重新上传
+                </NButton>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { CloudUploadOutlined } from '@vicons/antd'
-import { NIcon, NImage, NButton, NProgress } from 'naive-ui'
-import { CloseCircleFilled } from '@vicons/antd'
+import { CloudUploadOutlined } from '@vicons/antd';
+import { NIcon, NImage, NButton, NProgress } from 'naive-ui';
+import { CloseCircleFilled } from '@vicons/antd';
 import { onUnmounted, reactive, ref } from 'vue';
 import { cloudUpload } from '@/utils/cloudUpload';
 import { createImageThumbnail } from '@/utils/canvas';
@@ -51,7 +84,8 @@ import { blobToFile } from '@/utils/file';
 const emits = defineEmits<{
     uploaded: [url: string, type: 'origin' | 'thumbnail'],
     change: [file: File],
-}>()
+    imageLoad: [imageInfo: { width: number; height: number }]
+}>();
 
 
 /**
@@ -59,14 +93,14 @@ const emits = defineEmits<{
  * @param e 
  */
 function onDragEnter(e: DragEvent) {
-    (e.target as HTMLDivElement).toggleAttribute('allowdrop', true)
+    (e.target as HTMLDivElement).toggleAttribute('allowdrop', true);
 }
 /**
  * 拖拽离开
  * @param e 
  */
 function onDragLeave(e: DragEvent) {
-    (e.target as HTMLDivElement).toggleAttribute('allowdrop', false)
+    (e.target as HTMLDivElement).toggleAttribute('allowdrop', false);
 }
 /**
  * 拖拽放置完成
@@ -75,22 +109,22 @@ function onDragLeave(e: DragEvent) {
 function onFileDrop(e: DragEvent) {
     e.preventDefault();
     (e.target as HTMLDivElement).toggleAttribute('allowdrop', false);
-    const file = e.dataTransfer?.files[0]
+    const file = e.dataTransfer?.files[0];
     if (!file) return;
     if (!file.type.startsWith('image')) return;
     handleFileChange(file);
 }
 
 // 文件处理
-const selectedFile = ref<null | File>(null)
-const fileRef = ref<null | HTMLInputElement>(null)
-const showFileUpload = ref(true)
-const selectedThumbnailFile = ref<File | null>(null)
+const selectedFile = ref<null | File>(null);
+const fileRef = ref<null | HTMLInputElement>(null);
+const showFileUpload = ref(true);
+const selectedThumbnailFile = ref<File | null>(null);
 
 onUnmounted(() => {
     selectedFile.value = null;
     selectedThumbnailFile.value = null;
-})
+});
 
 
 function onFileClick() {
@@ -113,34 +147,35 @@ async function handleFileChange(file: File) {
         .then((res) => {
             selectedThumbnailFile.value = res;
             uploadThumbnail();
-        })
+        });
 }
 
-const previewImageBlob = ref<string | null>(null)
+const previewImageBlob = ref<string | null>(null);
 onUnmounted(() => {
-    clearPreviewData()
-})
+    clearPreviewData();
+});
 
 function clearPreviewData() {
     if (previewImageBlob.value) {
         window.URL.revokeObjectURL(previewImageBlob.value);
-        previewImageBlob.value = null
+        previewImageBlob.value = null;
     }
 }
 function handleShowPreview(file: File) {
-    const previewUrl = window.URL.createObjectURL(file)
+    const previewUrl = window.URL.createObjectURL(file);
     const image = new Image();
     return new Promise((resolve, reject) => {
         image.onload = () => {
             previewImageBlob.value = previewUrl;
             showFileUpload.value = false;
-            resolve(previewUrl)
-        }
+            resolve(previewUrl);
+            emits('imageLoad', { width: image.width, height: image.height  });
+        };
         image.onerror = () => {
-            reject()
-        }
-        image.src = previewUrl
-    })
+            reject();
+        };
+        image.src = previewUrl;
+    });
 
 }
 
@@ -158,8 +193,8 @@ function onClearFile() {
     selectedThumbnailFile.value = null;
     clearPreviewData();
     showFileUpload.value = true;
-    emits('uploaded', '', 'thumbnail')
-    emits('uploaded', '', 'origin')
+    emits('uploaded', '', 'thumbnail');
+    emits('uploaded', '', 'origin');
     startUpload.value = false;
 }
 
@@ -177,7 +212,7 @@ interface ICloudItem {
     thumbnailProcess: number;
 }
 
-const startUpload = ref(false)
+const startUpload = ref(false);
 
 const uploadData = reactive<ICloudItem>(
     {
@@ -190,21 +225,21 @@ const uploadData = reactive<ICloudItem>(
         thumbnailStatus: undefined,
         thumbnailProcess: 0,
     },
-)
+);
 
 /** 上传原图 */
 function uploadOrigin() {
     uploadData.originStatus = undefined;
     cloudUpload(selectedFile.value!, undefined, {
         onUploadProgress: (e) => {
-            uploadData.originProcess = +((e.progress || 0) * 100).toFixed(0)
+            uploadData.originProcess = +((e.progress || 0) * 100).toFixed(0);
         }
     }).then((res) => {
         uploadData.originStatus = 'success';
-        emits('uploaded', res, 'origin')
+        emits('uploaded', res, 'origin');
     }).catch(() => {
-        uploadData.originStatus = 'error'
-    })
+        uploadData.originStatus = 'error';
+    });
 }
 
 /** 上传缩略图 */
@@ -212,19 +247,19 @@ function uploadThumbnail() {
     uploadData.thumbnailStatus = undefined;
     cloudUpload(selectedFile.value!, { dir: 'thumbnail' }, {
         onUploadProgress: (e) => {
-            uploadData.thumbnailProcess = +((e.progress || 0) * 100).toFixed(0)
+            uploadData.thumbnailProcess = +((e.progress || 0) * 100).toFixed(0);
         }
     }).then((res) => {
-        uploadData.thumbnailStatus = 'success'
-        emits('uploaded', res, 'thumbnail')
+        uploadData.thumbnailStatus = 'success';
+        emits('uploaded', res, 'thumbnail');
     }).catch(() => {
-        uploadData.thumbnailStatus = 'error'
-    })
+        uploadData.thumbnailStatus = 'error';
+    });
 }
 
 defineExpose({
     onClearFile,
-})
+});
 
 </script>
 <style lang="scss" scoped>

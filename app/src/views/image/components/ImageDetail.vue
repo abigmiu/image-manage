@@ -1,17 +1,11 @@
 <template>
     <div>
-        <!-- <NSpace vertical>
-            <h6>图片</h6>
-
-
-            <NImage :width="200" :src="source.coverFilePath" :preview-src="source.filePath"></NImage>
-        </NSpace> -->
         <NDescriptions :column="1">
             <NDescriptionsItem>
                 <template #label>
                     图片
                 </template>
-                <NImage :width="200" :src="source.coverFilePath" :preview-src="source.filePath"></NImage>
+                <NImage :width="200" :src="source.coverFilePath" :preview-src="source.filePath" />
             </NDescriptionsItem>
             <NDescriptionsItem>
                 <template #label>
@@ -58,12 +52,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { NSpace, NImage, NDescriptions, NDescriptionsItem } from 'naive-ui'
+import { NSpace, NImage, NDescriptions, NDescriptionsItem } from 'naive-ui';
 
 
 const props = withDefaults(defineProps<{
     source: Record<string, any>,
 }>(), {
     source: () => ({})
-})
+});
 </script>

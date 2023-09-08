@@ -3,7 +3,7 @@ import { ITagResponse } from '@/types/apis/response/tags/tags';
 import http from '@/utils/axios';
 
 class TagsService {
-    private readonly prefix = 'tags'
+    private readonly prefix = 'tags';
 
     /**
      * 删除标签
@@ -14,7 +14,7 @@ class TagsService {
         return http.request({
             url: `${this.prefix}/${tagId}`,
             method: 'delete',
-        })
+        });
     }
 
     /**
@@ -27,7 +27,7 @@ class TagsService {
             url: this.prefix,
             method: 'post',
             data,
-        })
+        });
     } 
 
     /**
@@ -37,7 +37,7 @@ class TagsService {
     getList() {
         return http.request<ITagResponse[]>({
             url: `${this.prefix}/list`
-        })
+        });
     }
 }
 

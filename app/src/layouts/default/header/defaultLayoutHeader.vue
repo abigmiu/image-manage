@@ -11,7 +11,6 @@
                     <ReloadOutlined />
                 </NIcon>
             </div>
-
         </div>
         <div class="default-layout-header--right">
             <!-- 个人中心 -->
@@ -37,13 +36,12 @@
                     <span>项目配置</span>
                 </NTooltip>
             </div>
-
         </div>
     </div>
 </template>
 <script lang="ts" setup>
 import { NIcon, NTooltip, NAvatar, NDropdown } from 'naive-ui';
-import { MenuFoldOutlined, ReloadOutlined, SettingOutlined, UserOutlined } from '@vicons/antd'
+import { MenuFoldOutlined, ReloadOutlined, SettingOutlined, UserOutlined } from '@vicons/antd';
 </script>
 
 <style lang="scss">

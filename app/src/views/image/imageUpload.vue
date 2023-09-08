@@ -4,32 +4,45 @@
             <NForm label-width="120px" label-placement="left" label-align="right">
                 <NFormItem label="上传文件">
                     <div class="w-full">
-                        <DragFile @uploaded="onFileUploaded" ref="dragFileRef" @change="onFileChange"></DragFile>
+                        <DragFile
+                            ref="dragFileRef"
+                            @uploaded="onFileUploaded"
+                            @change="onFileChange"
+                            @image-load="onImageLoaded"
+                        />
                     </div>
-                    
                 </NFormItem>
                 <NFormItem label="文件名称">
-                    <NInput v-model:value="editData.name"></NInput>
+                    <NInput v-model:value="editData.name" />
                 </NFormItem>
                 <NFormItem label="文件备注">
-                    <NInput type="textarea" v-model:value="editData.remark"></NInput>
+                    <NInput v-model:value="editData.remark" type="textarea" />
                 </NFormItem>
                 <NFormItem label="文件原链接">
-                    <NInput v-model:value="editData.link"></NInput>
+                    <NInput v-model:value="editData.link" />
                 </NFormItem>
                 <NFormItem label="标签">
-                    <TagSelect v-model="editData.tagIds"></TagSelect>
+                    <TagSelect v-model="editData.tagIds" />
                 </NFormItem>
                 <NFormItem>
-                    <NButton @click="onResetData" v-if="submitted">上传新的</NButton>
-                    <NButton v-else @click="onSubmit" :loading="loading.submit" type="primary">提交</NButton>
+                    <NButton v-if="submitted" @click="onResetData">
+                        上传新的
+                    </NButton>
+                    <NButton
+                        v-else
+                        :loading="loading.submit"
+                        type="primary"
+                        @click="onSubmit"
+                    >
+                        提交
+                    </NButton>
                 </NFormItem>
             </NForm>
         </div>
     </NCard>
 </template>
 <script setup lang="ts">
-import { NCard, NForm, NInput, NFormItem, NButton, useMessage } from 'naive-ui'
+import { NCard, NForm, NInput, NFormItem, NButton, useMessage } from 'naive-ui';
 import DragFile from './components/DragFile.vue';
 import TagSelect from './components/TagSelect.vue';
 
@@ -42,11 +55,11 @@ const message = useMessage();
 // === loading 相关
 const loading = reactive({
     submit: false
-})
+});
 
 
 // 上传文件组件
-const dragFileRef = ref<null | InstanceType<typeof DragFile>>(null)
+const dragFileRef = ref<null | InstanceType<typeof DragFile>>(null);
 
 
 // === 表单数据
@@ -58,7 +71,9 @@ const editData = reactive({
     remark: '',
     coverFilePath: '',
     cloudValue: [] as any[],
-})
+    width: 200,
+    height: 200,
+});
 
 function onFileUploaded(url: string, type: 'origin' | 'thumbnail') {
     if (type === 'thumbnail') {
@@ -69,11 +84,16 @@ function onFileUploaded(url: string, type: 'origin' | 'thumbnail') {
 }
 
 function onFileChange(file: File) {
-    editData.name = file.name.split('.').slice(0, -1).join('')
+    editData.name = file.name.split('.').slice(0, -1).join('');
+}
+
+function onImageLoaded(image: { width: number, height: number }) {
+    editData.width = image.width;
+    editData.height = image.height;
 }
 
 
-const submitted = ref(false)
+const submitted = ref(false);
 async function onSubmit() {
     if (loading.submit) return;
     loading.submit = true;
@@ -86,11 +106,11 @@ async function onSubmit() {
             remark: editData.remark,
             link: editData.link,
             filePath: editData.filePath,
-        })
-        message.success('上传成功')
+        });
+        message.success('上传成功');
         submitted.value = true;
     } finally {
-        loading.submit = false
+        loading.submit = false;
     }
 }
 

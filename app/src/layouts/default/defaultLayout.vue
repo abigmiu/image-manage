@@ -1,23 +1,23 @@
 <template>
     <NLayout class="default-layout" has-sider>
         <NLayoutSider inverted>
-            <DefaultLayoutSider></DefaultLayoutSider>
+            <DefaultLayoutSider />
         </NLayoutSider>
         <NLayout class="default-layout-main">
             <NLayoutHeader class="default-layout-main__header">
-                <DefaultLayoutHeader></DefaultLayoutHeader>
+                <DefaultLayoutHeader />
             </NLayoutHeader>
             <NLayoutContent class="default-layout-main__content">
-                <DefaultLayoutContent></DefaultLayoutContent>
+                <DefaultLayoutContent />
             </NLayoutContent>
         </NLayout>
     </NLayout>
 </template>
 <script setup lang="ts">
 import { NLayout, NLayoutContent, NLayoutHeader, NLayoutSider } from 'naive-ui';
-import DefaultLayoutSider from './sider/defaultLayoutSider.vue'
-import DefaultLayoutHeader from './header/defaultLayoutHeader.vue'
-import DefaultLayoutContent from './content/defaultLayoutContent.vue'
+import DefaultLayoutSider from './sider/defaultLayoutSider.vue';
+import DefaultLayoutHeader from './header/defaultLayoutHeader.vue';
+import DefaultLayoutContent from './content/defaultLayoutContent.vue';
 </script>
 <style lang="scss">
 .default-layout {

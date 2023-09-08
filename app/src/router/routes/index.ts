@@ -1,6 +1,6 @@
-import { RouteRecordRaw } from 'vue-router'
-import defaultLayout from '@/layouts/default/defaultLayout.vue'
-import App from '@/App.vue'
+import { RouteRecordRaw } from 'vue-router';
+import defaultLayout from '@/layouts/default/defaultLayout.vue';
+import App from '@/App.vue';
 
 export const route: RouteRecordRaw[] = [
     {
@@ -56,4 +56,4 @@ export const route: RouteRecordRaw[] = [
         ]
     }
 
-]
+];

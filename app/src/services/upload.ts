@@ -3,7 +3,7 @@ import { IUploadResponse } from "@/types/apis/response/upload/upload";
 import http from '@/utils/axios';
 
 class UploadService {
-    private readonly prefix = 'upload'
+    private readonly prefix = 'upload';
 
     /**
      * 上传单个文件
@@ -19,7 +19,7 @@ class UploadService {
             method: 'post',
             params: config,
             data: formData,
-        })
+        });
     }
 }
 

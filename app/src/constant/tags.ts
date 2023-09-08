@@ -63,4 +63,4 @@ export const TAGS_COLOR_VALUE: Record<valueof<typeof TAGS_COLOR>, TagColor> = {
         textColor: '#e77d00',
         borderColor: '#e77d00',
     }
-}
+};

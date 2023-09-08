@@ -1,9 +1,9 @@
 <template>
     <NSelect
+        v-model:value="innerValue"
         multiple
         :options="options"
-        v-model:value="innerValue"
-    ></NSelect>
+    />
 </template>
 <script setup lang="ts">
 import { tagService } from '@/services/tags';
@@ -15,29 +15,29 @@ type IProps = {
 }
 const props = withDefaults(defineProps<IProps>(), {
     modelValue: () => []
-})  
+});  
 const emits = defineEmits<{
     'update:modelValue': [data: number[]]
-}>()
+}>();
 
 const innerValue = computed({
     get() {
-        return props.modelValue
+        return props.modelValue;
     },
     set(val: number[]) {
         console.log(val);
         emits('update:modelValue', val);
     }
-})
-const options = reactive<SelectOption[]>([])
+});
+const options = reactive<SelectOption[]>([]);
 async function fetchTags() {
-    const res = await tagService.getList()
+    const res = await tagService.getList();
     res.forEach((tag) => {
         options.push({
             label: tag.name,
             value: tag.id
-        })
-    })
+        });
+    });
 }
-onMounted(() => fetchTags())
+onMounted(() => fetchTags());
 </script>

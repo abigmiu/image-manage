@@ -1,17 +1,20 @@
 <template>
-    <NMenu :options="menuOptions" class="default-layout--sider" inverted @update-value="onClickMenuItem">
-
-    </NMenu>
+    <NMenu
+        :options="menuOptions"
+        class="default-layout--sider"
+        inverted
+        @update-value="onClickMenuItem"
+    />
 </template>
 <script setup lang="ts">
-import type { MenuOption } from 'naive-ui'
-import { NMenu } from 'naive-ui'
+import type { MenuOption } from 'naive-ui';
+import { NMenu } from 'naive-ui';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const routes = router.options.routes;
 
-const menuOptions: MenuOption[] = []
+const menuOptions: MenuOption[] = [];
 
 routes?.forEach(route => {
     if (route.path !== '/') {
@@ -23,16 +26,16 @@ routes?.forEach(route => {
                 return {
                     label: childRoute.meta!.title,
                     key: childRoute.name as string
-                }
+                };
             })
-        })
+        });
     }
 
-})
+});
 
 function onClickMenuItem(key: string) {
     router.push({
         name: key
-    })
+    });
 }
 </script>

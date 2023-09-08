@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NDialogProvider, NMessageProvider } from 'naive-ui'
+import { NDialogProvider, NMessageProvider } from 'naive-ui';
 </script>
 
 <template>

@@ -21,21 +21,21 @@ export function createImageThumbnail(imageSrc: string, options: IThumbnailOption
                 const ratio = defaultCompressedWidth / image.width;
                 const defaultCompressedHeight = ratio * image.height;
                 console.log(image.width, image.height, ratio);
-                console.log('defaultCompressedHeight', defaultCompressedHeight)
+                console.log('defaultCompressedHeight', defaultCompressedHeight);
                 canvas.width = Math.ceil(defaultCompressedWidth);
-                canvas.height = Math.ceil(defaultCompressedHeight)
+                canvas.height = Math.ceil(defaultCompressedHeight);
             }
 
             canvasCtx?.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
             canvas.toBlob((blob) => {
                 if (!blob) {
-                    reject()
+                    reject();
                 } else {
                     resolve(blob);
                 }
 
             }, `image/${exportType}`);
-        }
-        image.src = imageSrc
-    })
+        };
+        image.src = imageSrc;
+    });
 }

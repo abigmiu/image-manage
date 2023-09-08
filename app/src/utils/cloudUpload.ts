@@ -10,7 +10,7 @@ export async function cloudUpload(file: File, query?:ISingFileUploadRequest,opti
     formData.append(uploadParams.fileField, file);
     Object.keys(uploadParams.form).forEach(key => {
         formData.append(key, uploadParams.form[key]);
-    })
+    });
     await axios.request({
         ...options,
         url: uploadParams.uploadUrl,
@@ -18,7 +18,7 @@ export async function cloudUpload(file: File, query?:ISingFileUploadRequest,opti
         data: formData,
         params: query,
         headers: uploadParams.headers,
-    })
+    });
 
     return uploadParams.accessUrl;
 
