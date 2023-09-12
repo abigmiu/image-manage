@@ -1,7 +1,8 @@
 import { supplierService } from '@/services/supplier';
-import { ISingFileUploadRequest } from '@/types/apis/request/upload/upload';
+import type { ISingFileUploadRequest } from '@/types/apis/request/upload/upload';
 import { ICloudUploadParamsResponse } from '@/types/apis/response/supplier/supplier';
-import axios, { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 export async function cloudUpload(file: File, query?:ISingFileUploadRequest,options?: AxiosRequestConfig) {
     const uploadParams = await supplierService.getUploadConfig();

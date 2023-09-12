@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import { route } from './routes/index';
 

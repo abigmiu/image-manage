@@ -1,4 +1,4 @@
-import { TagColor } from "naive-ui/es/tag/src/common-props";
+import type { TagColor } from "naive-ui/es/tag/src/common-props";
 
 export const TAGS_COLOR = {
     NORMAL: 0,

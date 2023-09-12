@@ -7,7 +7,8 @@
 </template>
 <script setup lang="ts">
 import { tagService } from '@/services/tags';
-import { NSelect, SelectOption } from 'naive-ui';
+import type { SelectOption } from 'naive-ui';
+import { NSelect } from 'naive-ui';
 import { VNodeChild, computed, h, onMounted, reactive, ref } from 'vue';
 
 type IProps = {

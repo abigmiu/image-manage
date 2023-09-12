@@ -52,7 +52,7 @@
     </NModal>
 </template>
 <script lang="ts" setup>
-import { ITags, ITagsCreate } from '@/types/tags/tags';
+import type { ITags, ITagsCreate } from '@/types/tags/tags';
 
 import { NCard, NTag, NSpace, useDialog, NButton, NIcon, NInput, NModal, NForm, NFormItem, NSelect } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
@@ -60,8 +60,8 @@ import { PlusOutlined } from '@vicons/antd';
 import { TAGS_COLOR_VALUE, TAGS_COLOR_NAME, TAGS_COLOR } from '@/constant/tags';
 import { tagService } from '@/services/tags';
 import { onMounted, reactive, ref } from 'vue';
-import { SelectMixedOption } from 'naive-ui/es/select/src/interface';
-import { ITagsCreateRequest } from '@/types/apis/request/tags/tags';
+import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
+import type { ITagsCreateRequest } from '@/types/apis/request/tags/tags';
 
 
 const dialog = useDialog();

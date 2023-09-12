@@ -1,4 +1,4 @@
-import { ICloudUploadParamsResponse } from '@/types/apis/response/supplier/supplier';
+import type { ICloudUploadParamsResponse } from '@/types/apis/response/supplier/supplier';
 import http from '@/utils/axios';
 
 class SupplierService {

@@ -36,6 +36,7 @@
         "vue/html-indent": [
             "error",
             4,
-        ]
+        ],
+        "@typescript-eslint/consistent-type-imports": "error"
     }
 }

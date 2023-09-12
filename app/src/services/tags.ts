@@ -1,5 +1,5 @@
-import { ITagsCreateRequest } from '@/types/apis/request/tags/tags';
-import { ITagResponse } from '@/types/apis/response/tags/tags';
+import type { ITagsCreateRequest } from '@/types/apis/request/tags/tags';
+import type { ITagResponse } from '@/types/apis/response/tags/tags';
 import http from '@/utils/axios';
 
 class TagsService {

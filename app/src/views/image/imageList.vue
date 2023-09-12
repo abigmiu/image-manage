@@ -1,6 +1,11 @@
 <template>
     <NCard>
-        <BasicTable :columns="columns" :data="listData" :pagination="pagination" />
+        <BasicTable
+            :columns="columns"
+            :data="listData"
+            :item-count="itemCount"
+            @pagination-change="onPaginationChange"
+        />
 
         <NDrawer v-model:show="detailVisible" :width="500">
             <NDrawerContent title="详情">
@@ -80,11 +85,7 @@ const columns = [
     }
 ];
 
-const pagination = reactive<PaginationProps>({
-    page: 1,
-    pageSize: 10,
-    itemCount: 0
-});
+const itemCount = ref(0);
 
 const query = {
     page: 1,
@@ -95,12 +96,17 @@ const listData = ref([]);
 async function fetchData() {
     const res: any = await imageService.getPageData(query);
     listData.value = res.content;
-    pagination.itemCount = res.pagination.total;
-    pagination.page = res.pagination.page;
-    pagination.pageSize = res.pagination.pageSize;
+    itemCount.value = res.pagination.total;
 }
-
 onMounted(() => fetchData());
+
+function onPaginationChange(data: { page: number, pageSize?: number  }) {
+    query.page = data.page;
+    if (data.pageSize) {
+        query.size = data.pageSize;
+    }
+    fetchData();
+}
 
 const dialog = useDialog();
 async function onDelete(row: any) {

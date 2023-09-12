@@ -1,6 +1,6 @@
-import { IApiResponse } from '@/types/apis/base';
+import type { IApiResponse } from '@/types/apis/base';
 import axios from 'axios';
-import { AxiosInstance, CreateAxiosDefaults, AxiosResponse, AxiosRequestConfig } from 'axios';
+import type { AxiosInstance, CreateAxiosDefaults, AxiosResponse, AxiosRequestConfig } from 'axios';
 
 class IAxios {
     private instance: AxiosInstance;

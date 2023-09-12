@@ -1,4 +1,4 @@
-import { IThumbnailOption } from "@/types/utils/canvas";
+import type { IThumbnailOption } from "@/types/utils/canvas";
 
 /**
  * 生成图片的缩略图

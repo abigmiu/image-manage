@@ -1,5 +1,5 @@
-import { ISingFileUploadRequest } from "@/types/apis/request/upload/upload";
-import { IUploadResponse } from "@/types/apis/response/upload/upload";
+import type { ISingFileUploadRequest } from "@/types/apis/request/upload/upload";
+import type { IUploadResponse } from "@/types/apis/response/upload/upload";
 import http from '@/utils/axios';
 
 class UploadService {
