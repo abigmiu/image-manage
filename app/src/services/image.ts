@@ -1,3 +1,5 @@
+import type { IPageResponse } from '@/types/apis/base';
+import type { IImageResponseItem } from '@/types/apis/response/image/image.response';
 import http from '@/utils/axios';
 
 class ImageService {
@@ -12,7 +14,7 @@ class ImageService {
     }
 
     getPageData(query: Record<string, any>) {
-        return http.request({
+        return http.request<IPageResponse<IImageResponseItem>>({
             url: `${this.prefix}/page`,
             params: query,
         });

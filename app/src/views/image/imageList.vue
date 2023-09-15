@@ -1,9 +1,10 @@
 <template>
     <NCard>
         <BasicTable
+            :loading="loading"
             :columns="columns"
-            :data="listData"
-            :item-count="itemCount"
+            :data="tableData"
+            :item-count="pagination.total"
             @pagination-change="onPaginationChange"
         />
 
@@ -15,12 +16,14 @@
     </NCard>
 </template>
 <script setup lang="ts">
+import type    {IImageResponseItem} from '@/types/apis/response/image/image.response.ts';
 import { BasicTable } from '@/components/table';
 import { imageService } from '@/services/image';
 import { NButton, NCard, NImage, useDialog, NDrawer, NDrawerContent, PaginationProps } from 'naive-ui';
 import { h, onMounted, reactive, ref } from 'vue';
 
 import ImageDetail from './components/ImageDetail.vue';
+import { useTableHook } from '@/hooks/tableHook';
 
 const columns = [
     {
@@ -87,7 +90,7 @@ const columns = [
 
 const itemCount = ref(0);
 
-const query = {
+const query: Record<string, any> = {
     page: 1,
     size: 10
 };
@@ -100,12 +103,14 @@ async function fetchData() {
 }
 onMounted(() => fetchData());
 
+const { loading, tableData, fetchTableData, pagination } = useTableHook(imageService.getPageData.bind(imageService), query);
+
 function onPaginationChange(data: { page: number, pageSize?: number  }) {
     query.page = data.page;
     if (data.pageSize) {
         query.size = data.pageSize;
     }
-    fetchData();
+    fetchTableData();
 }
 
 const dialog = useDialog();

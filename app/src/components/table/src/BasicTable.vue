@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { TABLE_DEFAULT_PAGE, TABLE_DEFAULT_SIZE, TABLE_DEFAULT_SIZES } from '@/constant/app';
 import type { PaginationProps, DataTableProps } from 'naive-ui';
-import { NDataTable } from 'naive-ui';
+import { NDataTable, NSpin } from 'naive-ui';
 import { computed, reactive, useAttrs } from 'vue';
 
 interface Props extends /* @vue-ignore */ DataTableProps {

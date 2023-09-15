@@ -3,3 +3,14 @@ export interface IApiResponse<T = any> {
     code: string;
     msg: string;
 }
+
+export interface IPagination {
+    page: number;
+        size: number;
+        total: number;
+}
+
+export interface IPageResponse<T = any> {
+    content: T[];
+    pagination:IPagination
+}
