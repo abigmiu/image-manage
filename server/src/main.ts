@@ -6,7 +6,6 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
 
-    console.log(__dirname);
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     const config = app.get(ConfigService);
     app.use(cookieParser());

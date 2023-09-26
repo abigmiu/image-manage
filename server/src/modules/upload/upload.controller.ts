@@ -11,7 +11,6 @@ export class UploadController {
     @Post()
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
-        console.log('file', file);
         const res = await this.uploadService.addFile(file.path, file.originalname);
         return res;
     }

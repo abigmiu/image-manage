@@ -9,6 +9,7 @@ export const route: RouteRecordRaw[] = [
             name: 'imageList',
         },
     },
+    
     {
         path: '/image',
         component: defaultLayout,

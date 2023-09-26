@@ -1,10 +1,16 @@
 import type { App } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import { route } from './routes/index';
+import openPageRoutes from './routes/openPage';
+
+const routes = [
+    ...openPageRoutes,
+    ...route
+];
 
 export const router = createRouter({
     history: createWebHistory(),
-    routes: route,
+    routes: routes,
     scrollBehavior: () => ({
         left: 0,
         top: 0,

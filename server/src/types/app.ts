@@ -18,4 +18,6 @@ export interface IAppConfig {
     uploadAbsolutePath: string;
     staticAssetsPath: string;
     cloudUpload?: ICloudUpload;
+    jwtSecret: string;
+    jwtExpiresIn: number;
 }

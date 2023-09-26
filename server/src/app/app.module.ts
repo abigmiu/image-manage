@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TransformInterceptor } from 'src/interceptors/transfrom.interceptor';
 import { appModules } from 'src/modules';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -12,6 +12,7 @@ import { HttpExceptionFilter } from 'src/filters/httpException.filter';
 import { GlobalExceptionFilter } from 'src/filters/globalException.filter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppValidationPipe } from 'src/pipe/validate.pipe';
+import { AppAuthGuard } from '@/guards/auth.guard';
 
 @Module({
     imports: [
@@ -46,6 +47,10 @@ import { AppValidationPipe } from 'src/pipe/validate.pipe';
         {
             provide: APP_PIPE,
             useClass: AppValidationPipe
+        },
+        {
+            provide: APP_GUARD,
+            useClass: AppAuthGuard
         }
     ],
 })
