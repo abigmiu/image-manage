@@ -28,6 +28,7 @@
     </div>
 </template>
 <script setup lang="ts">
+import { authService } from '@/services/auth';
 import type { ILoginRequest } from '@/types/apis/request/auth/login';
 import type { FormRules, FormInst } from 'naive-ui';
 import { NCard, NForm, NFormItem, NInput, NButton } from 'naive-ui';
@@ -60,7 +61,15 @@ const loading = ref(false);
  */
 async function onLogin() {
     await formRef.value!.validate();
-
+    if (loading.value) return;
+    loading.value = true;
+    try {
+        const res = await authService.login(formData);
+        localStorage.setItem('token', res.token);
+    } finally {
+        loading.value = false;
+    }
+   
 }
 </script>
 
