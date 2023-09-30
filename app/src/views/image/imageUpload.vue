@@ -106,6 +106,8 @@ async function onSubmit() {
             remark: editData.remark,
             link: editData.link,
             filePath: editData.filePath,
+            width: editData.width,
+            height: editData.height,
         });
         message.success('上传成功');
         submitted.value = true;
