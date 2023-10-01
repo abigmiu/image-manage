@@ -1,8 +1,8 @@
-import type { RouteRecordRaw } from 'vue-router';
-import defaultLayout from '@/layouts/default/defaultLayout.vue';
-import App from '@/App.vue';
 
-export const route: RouteRecordRaw[] = [
+import defaultLayout from '@/layouts/default/defaultLayout.vue';
+import type { IRouteRecordRaw } from '@/types/app/router';
+
+export const route: IRouteRecordRaw[] = [
     {
         path: '/',
         redirect: {
@@ -15,6 +15,7 @@ export const route: RouteRecordRaw[] = [
         component: defaultLayout,
         name: 'image',
         meta: {
+            isMenu: true,
             title: '图片管理',
         },
         children: [
@@ -43,6 +44,7 @@ export const route: RouteRecordRaw[] = [
         component: defaultLayout,
         name: 'tags',
         meta: {
+            isMenu: true,
             title: '标签管理',
         },
         children: [

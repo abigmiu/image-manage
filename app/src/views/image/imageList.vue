@@ -96,12 +96,6 @@ const query: Record<string, any> = {
 };
 
 const listData = ref([]);
-async function fetchData() {
-    const res: any = await imageService.getPageData(query);
-    listData.value = res.content;
-    itemCount.value = res.pagination.total;
-}
-onMounted(() => fetchData());
 
 const { loading, tableData, fetchTableData, pagination } = useTableHook(imageService.getPageData.bind(imageService), query);
 

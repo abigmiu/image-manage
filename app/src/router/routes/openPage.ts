@@ -1,9 +1,10 @@
-import type { RouteRecordRaw } from "vue-router";
+import type { IRouteRecordRaw } from "@/types/app/router";
 
-const routes: RouteRecordRaw[] = [
+const routes: IRouteRecordRaw[] = [
     {
         path: '/login',
         meta: {
+            isMenu: false,
             title: '登录'
         },
         component: () => import('@/views/login/loginPage.vue'),
