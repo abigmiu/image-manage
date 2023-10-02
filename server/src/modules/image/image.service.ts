@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { IMAGE_NOT_EXIT } from "@/constant/requestException.constant";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ImageEntity } from "src/entities/image/image.entity";
 import { TagsEntity } from "src/entities/tags/tags.entity";
-import { CreateImageDto, ImageQueryDto } from "src/transformObject/image/dto/image.dto";
+import { CreateImageDto, ImageQueryDto, UpdateImageDto } from "src/transformObject/image/dto/image.dto";
 import { handlePageData } from "src/utils/pager";
 import { Repository } from "typeorm";
 
@@ -46,6 +47,41 @@ export class ImageService {
         });
 
         await this.imageRepo.save(image);
+    }
+
+    async updateImage(id: number,data: UpdateImageDto) {
+        const image = await this.imageRepo.findOne({
+            where: {
+                id,
+                isDelete: false,
+            }
+        });
+        if (!image) {
+            throw new BadRequestException(IMAGE_NOT_EXIT);
+        }
+
+        if (data.remark) {
+            image.remark = data.remark;
+        }
+
+        if (data.link) {
+            image.link = data.link;
+        }
+
+        if (data.name) {
+            image.name = data.name;
+        }
+
+        if (data.tagIds && data.tagIds.length) {
+            image.tags = data.tagIds.map((tagId) => {
+                const tag = new TagsEntity();
+                tag.id = tagId;
+                return tag;
+            });
+        }
+
+        const res = await this.imageRepo.save(image);
+        return res;
     }
 
     /** 删除图片 */

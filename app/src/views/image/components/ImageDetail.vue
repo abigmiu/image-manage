@@ -1,5 +1,13 @@
 <template>
     <div>
+        <NSpace>
+            <NButton v-if="!isEdit" @click="onEdit">
+                编辑
+            </NButton>
+            <NButton v-else @click="onSaveUpdate">
+                保存
+            </NButton>
+        </NSpace>
         <NDescriptions :column="1">
             <NDescriptionsItem>
                 <template #label>
@@ -9,15 +17,30 @@
             </NDescriptionsItem>
             <NDescriptionsItem>
                 <template #label>
-                    名称
+                    <div class="flex items-center">
+                        <span class="mr-2">名称</span>
+                    </div>
                 </template>
-                <p>{{ source.name }}</p>
+                <NSpace v-if="isEdit">
+                    <NInput v-model:value="editData.name" />
+                </NSpace>
+                <p v-else>
+                    {{ source.name }}
+                </p>
             </NDescriptionsItem>
             <NDescriptionsItem>
                 <template #label>
-                    备注
+                    <div class="flex items-center">
+                        <span class="mr-2">备注</span>
+                    </div>
                 </template>
-                <p>{{ source.remark }}</p>
+                <NSpace v-if="isEdit">
+                    <NInput v-model:value="editData.remark" type="textarea" />
+                </NSpace>
+               
+                <p v-else>
+                    {{ source.remark }}
+                </p>
             </NDescriptionsItem>
             <NDescriptionsItem>
                 <template #label>
@@ -53,11 +76,30 @@
 </template>
 <script setup lang="ts">
 import { NSpace, NImage, NDescriptions, NDescriptionsItem } from 'naive-ui';
-
+import { imageService } from '@/services/image';
 
 const props = withDefaults(defineProps<{
     source: Record<string, any>,
 }>(), {
     source: () => ({})
 });
+
+const isEdit = ref(false);
+function onEdit() {
+    isEdit.value = true;
+    editData.name = props.source.name;
+    editData.remark = props.source.remark;
+}
+
+const editData = reactive({
+    name: '',
+    remark: '',
+});
+
+async function onSaveUpdate() {
+    await imageService.updateImage(props.source.id, editData);
+    isEdit.value = false;
+}
+
+
 </script>

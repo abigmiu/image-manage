@@ -33,9 +33,10 @@ import type { ILoginRequest } from '@/types/apis/request/auth/login';
 import type { FormRules, FormInst } from 'naive-ui';
 import { NCard, NForm, NFormItem, NInput, NButton } from 'naive-ui';
 import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
 
 const formRules = ref<FormRules>({
     account: {
@@ -69,13 +70,21 @@ async function onLogin() {
     try {
         const res = await authService.login(formData);
         localStorage.setItem('token', res.token);
-        router.replace({
-            path: '/'
-        });
+        const { prePage } = route.query;
+        if (prePage && typeof prePage === 'string') {
+            router.replace({
+                path: decodeURIComponent(prePage)
+            });
+        } else {
+            router.replace({
+                path: '/'
+            });
+        }
+
     } finally {
         loading.value = false;
     }
-   
+
 }
 </script>
 

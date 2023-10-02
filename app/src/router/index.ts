@@ -20,3 +20,13 @@ export const router = createRouter({
 export function setupRouter(app: App) {
     app.use(router);
 }
+
+export function toLoginPage() {
+    const { pathname, search } = window.location;
+    router.replace({
+        name: 'Login',
+        query: {
+            prePage: encodeURIComponent(`${pathname}${search}`)
+        },
+    });
+}

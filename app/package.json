@@ -27,6 +27,7 @@
     "typescript": "^5.0.2",
     "unocss": "^0.55.2",
     "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.5",
     "vue-tsc": "^1.8.5"
   }

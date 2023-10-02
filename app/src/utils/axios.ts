@@ -2,6 +2,7 @@ import type { IApiResponse } from '@/types/apis/base';
 import axios from 'axios';
 import type { AxiosInstance, CreateAxiosDefaults, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { createMessage } from './naive';
+import { toLoginPage } from '@/router';
 
 class IAxios {
     private instance: AxiosInstance;
@@ -38,6 +39,7 @@ class IAxios {
         switch(code) {
             case 401:
                 createMessage().error('未登录或登录过期');
+                toLoginPage();
                 break;
             default:
                 break;

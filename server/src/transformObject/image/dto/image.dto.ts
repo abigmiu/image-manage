@@ -21,6 +21,15 @@ export class CreateImageDto {
     height: number;
 }
 
+export class UpdateImageDto {
+    name?: string;
+    remark?: string;
+    /** 文件原 url */
+    link?: string;
+    /** 标签id*/
+    tagIds: number[];
+}
+
 export class ImageQueryDto {
     @IsOptional()
     @Type(() => Number)

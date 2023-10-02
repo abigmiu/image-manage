@@ -1,4 +1,5 @@
 import type { IPageResponse } from '@/types/apis/base';
+import type { IImageUpdateDto } from '@/types/apis/request/image/image';
 import type { IImageResponseItem } from '@/types/apis/response/image/image.response';
 import http from '@/utils/axios';
 
@@ -24,6 +25,13 @@ class ImageService {
         return http.request({
             url: `${this.prefix}/${imageId}`,
             method: 'delete',
+        });
+    }
+
+    updateImage(id: number, data: IImageUpdateDto) {
+        return http.request({
+            url:`${this.prefix}/${id}`,
+            method: 'patch'
         });
     }
 }

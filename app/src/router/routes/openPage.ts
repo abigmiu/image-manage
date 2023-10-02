@@ -3,6 +3,7 @@ import type { IRouteRecordRaw } from "@/types/app/router";
 const routes: IRouteRecordRaw[] = [
     {
         path: '/login',
+        name: 'Login',
         meta: {
             isMenu: false,
             title: '登录'
