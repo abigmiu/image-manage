@@ -28,10 +28,9 @@ export class TransformInterceptor implements NestInterceptor {
             map((data) => {
                 const ret = {
                     code: HttpStatus.OK,
-                    data: data || null,
-                    msg: 'ok',
+                    result: data || null,
+                    message: 'ok',
                 };
-
 
                 return ret;
             }),

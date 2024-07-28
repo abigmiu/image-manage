@@ -20,8 +20,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
         const ret = {
             code: 500,
-            data: null,
-            msg: message,
+            result: null,
+            message: message,
         };
 
         response.status(200).json(ret);

@@ -1,0 +1,2 @@
+export const POST_LOCK = 'POST_LOCK';
+export const POST_SECTION_LOCK = 'POST_SECTION_LOCK';

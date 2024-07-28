@@ -1,0 +1,10 @@
+{   
+    "$schema": "./node_modules/@compodoc/compodoc/src/config/schema.json",
+    "port": 8888,
+    "theme": "gitbook",
+    "language": "zh-CN",
+    "open": true,
+    "serve": true,
+    "watch": true,
+    "tsconfig": "./tsconfig.json"
+}

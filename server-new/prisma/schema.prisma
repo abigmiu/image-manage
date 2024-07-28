@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  @@map("user")
+  id Int @id @default(autoincrement())
+  account String @unique
+  nickname String
+  password String
+  avatar String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isFreeze Boolean  @default(false) @map("is_freeze")
+  isDelete Boolean @default(false) @map("is_delete")
+}
+
+model Tag {
+  @@map("tag")
+  id Int @id @default(autoincrement())
+  name String
+  colorType Int @map("color_type")
+  isDelete Boolean @default(false) @map("is_delete")
+  images Image[] @relation("TagImage")
+}
+
+model Image {
+  @@map("image")
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isDelete Boolean @default(false) @map("is_delete")
+  originId Int
+  thumbId Int
+  originFile File @relation(name: "ImageOriginFile", fields: [originId], references: [id])
+  thumbFile File @relation(name: "ImageThumbFile", fields: [thumbId], references: [id])
+  remark String?
+  name String
+  link String?
+  cloudValue Json? @map("cloud_value")
+  tags Tag[] @relation("TagImage")
+}
+
+model File {
+  @@map("file")
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  filePath String @map("file_path")
+  originName String @map("origin_name")
+  isDelete Boolean @default(false) @map("is_delete")
+  size Int
+  mimetype Int
+  width Int?
+  height Int?
+  originFileInImage Image[] @relation("ImageOriginFile")
+  thumbFileInImage Image[] @relation("ImageThumbFile")
+}

@@ -13,6 +13,7 @@ import { GlobalExceptionFilter } from 'src/filters/globalException.filter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppValidationPipe } from 'src/pipe/validate.pipe';
 import { AppAuthGuard } from '@/guards/auth.guard';
+import { JwtStrategy } from '@/modules/auth/jwt.strategy';
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { AppAuthGuard } from '@/guards/auth.guard';
     ],
     controllers: [AppController],
     providers: [
+        JwtStrategy,
         AppService,
         {
             provide: APP_INTERCEPTOR,
