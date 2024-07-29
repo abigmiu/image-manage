@@ -67,3 +67,17 @@ model File {
   originFileInImage Image[] @relation("ImageOriginFile")
   thumbFileInImage Image[] @relation("ImageThumbFile")
 }
+
+model Bucket {
+  @@map("bucket")
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isDelete Boolean @default(false) @map("is_delete")
+  name String
+  type Int
+  fileCount Int @default(0) @map("file_count")
+  fileSize Int @default(0) @map("file_size")
+  remark String?
+  config Json
+}

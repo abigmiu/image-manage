@@ -1,6 +1,7 @@
 import { Body, Controller, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UploadTaskRequest } from './dto/upload-task.dto';
 
 @Controller('upload')
 export class UploadController {
@@ -17,6 +18,11 @@ export class UploadController {
   }, @Body() body: any) {
    console.log("🚀 ~ UploadController ~ uploadFile ~ body:", body);
    return this.uploadService.addFile(formData, body);
+  }
 
+  @Post('task')
+  async asyncUploadTask(@Body() dto: UploadTaskRequest) {
+    console.log("🚀 ~ UploadController ~ asyncUploadTask ~ dto:", dto);
+    
   }
 }

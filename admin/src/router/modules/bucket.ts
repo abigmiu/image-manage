@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { ExclamationCircleOutlined } from '@vicons/antd';
+import { UploadOutlined } from '@vicons/antd';
 import { renderIcon } from '@/utils/index';
 
 /**
@@ -16,39 +16,33 @@ import { renderIcon } from '@/utils/index';
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/exception',
-    name: 'Exception',
-    redirect: '/exception/403',
+    path: '/bucket',
+    name: 'Bucket',
+    redirect: '/bucket/index',
     component: Layout,
     meta: {
-      title: '异常页面',
-      icon: renderIcon(ExclamationCircleOutlined),
-      sort: 3,
+      title: '',
+      icon: renderIcon(UploadOutlined),
+      sort: 2,
     },
     children: [
       {
-        path: '403',
-        name: 'exception-403',
+        path: '/bucket/index',
+        name: 'bucket/index',
         meta: {
-          title: '403',
+          title: '存储桶',
         },
-        component: () => import('@/views/exception/403.vue'),
+        component: () => import('@/views/bucket/BucketPage.vue'),
       },
       {
-        path: '404',
-        name: 'exception-404',
+        path: 'basic-info/:id?',
+        name: 'basic-info',
         meta: {
-          title: '404',
+          title: '基础详情',
+          hidden: true,
+          activeMenu: 'basic-list',
         },
-        component: () => import('@/views/exception/404.vue'),
-      },
-      {
-        path: '500',
-        name: 'exception-500',
-        meta: {
-          title: '500',
-        },
-        component: () => import('@/views/exception/500.vue'),
+        component: () => import('@/views/list/basicList/info.vue'),
       },
     ],
   },

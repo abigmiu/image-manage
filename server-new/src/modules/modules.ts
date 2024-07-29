@@ -1,4 +1,5 @@
 import { AuthModule } from "./auth/auth.module";
+import { BucketModule } from "./bucket/bucket.module";
 import { AppLoggerModule } from "./common/app-logger/app-logger.module";
 import { ImageInfoModule } from "./image-info/image-info.module";
 
@@ -13,4 +14,5 @@ export const businessModules = [
     UploadModule,
     AppLoggerModule,
     ImageInfoModule,
+    BucketModule
 ];

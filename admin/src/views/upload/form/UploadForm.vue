@@ -18,14 +18,14 @@
               multiple
             />
           </n-form-item>
-          <n-form-item label="选择相册" path="album">
+          <!-- <n-form-item label="选择相册" path="album">
             <n-select
               v-model:value="formValue.album"
               size="large"
               :options="albumOptions"
               multiple
             />
-          </n-form-item>
+          </n-form-item> -->
         </n-form>
       </n-card>
     </div>
@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, unref, reactive } from 'vue';
+  import { ref, unref, reactive, onMounted } from 'vue';
   import { CloudUploadOutlined } from '@vicons/antd';
   import {
     NUpload,
@@ -82,10 +82,11 @@
     UploadFileInfo,
     NUploadFileList,
   } from 'naive-ui';
-  import { uploadImageWithThumb } from '@/api/upload/upload';
+  import { createUploadAsyncTask, uploadImageWithThumb } from '@/api/upload/upload';
   import imageBlobReduce from 'image-blob-reduce';
   import { getImageDimensions } from '@/utils';
   import { createImageInfo } from '@/api/image/image';
+  import { getBucketTableList } from '@/api/bucket/bucket';
 
   const rules = {};
   const defaultValueRef = () => ({
@@ -94,10 +95,21 @@
   });
   const formValue = reactive(defaultValueRef());
 
-  const bucketOptions = [];
+  const bucketOptions = ref([]);
   const albumOptions = [];
 
   const imagesResult: Array<any> = [];
+
+  const getBuckets = async () => {
+    const res = await getBucketTableList();
+    bucketOptions.value = res.map((item) => ({
+      label: item.name,
+      value: item.id,
+    }));
+  };
+  onMounted(() => {
+    getBuckets();
+  });
 
   const customRequest = async (options: UploadCustomRequestOptions) => {
     if (!options.file.file) return;
@@ -130,10 +142,15 @@
       console.log('🚀 ~ customRequest ~ res:', res);
       const { result } = res.data as any;
       imagesResult.push(res);
-      await createImageInfo({
+      const imageInfoRes = await createImageInfo({
         thumbId: result.thumb.id,
         originId: result.thumb.id,
         name: options.file.file.name,
+      });
+
+      createUploadAsyncTask({
+        imageId: imageInfoRes.result.id,
+        bucketIds: formValue.bucket,
       });
     } catch (e) {
       console.error('🚀 ~ customRequest ~ e:', e);
